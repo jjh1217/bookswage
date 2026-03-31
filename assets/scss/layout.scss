@@ -113,7 +113,6 @@ aside {
     min-height: 0;
     position: relative;
     padding-left: 64px;
-    border-right: 1px solid var(--color-gray4);
     transition: padding var(--transition-base);
 }
 
@@ -184,7 +183,8 @@ aside {
 /* aside - menu */
 .menuSub {
     width: 230px;
-    max-height: 100%;
+    height: 100%;
+    border-right: 1px solid var(--color-gray4);
     overflow: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;
