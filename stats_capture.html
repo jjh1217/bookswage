@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bookswage 통합 보안 관제 시스템</title>
+
+    <!-- open graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://b2b.bookswage.com/admin">
+    <meta property="og:title" content="bookswage 통합 보안 관제 시스템">
+    <meta property="og:description" content="콘텐츠 보호, 사용자 인증, 데이터 유출 방지를 통합 관리하는 bookswage 보안 관제 시스템. 대시보드와 통계를 통해 운영 현황을 한눈에 확인하세요.">
+    <meta property="og:image" content="https://b2b.bookswage.com/assets/img/sns_logo.png">
+
+    <!-- favicon -->
+    <link rel="icon" href="../assets/img/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="../assets/img/favicon/site.webmanifest">
+
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="../assets/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="../assets/css/common.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+    <!-- script -->
+    <script type="text/javascript" src="./assets/js/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="./assets/js/jquery-migrate-1.4.1.min.js"></script>
+    <script type="text/javascript" src="./assets/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="./assets/js/common.js"></script>
+    
+    <!-- chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript" src="../assets/js/chart_custom.js"></script>
+
+    <script>
+        $(function(){
+            //chart - line
+            $('.chk_chartDate').each(function() {
+                const canvasId = $(this).data('chart');
+                const {labels, tooltipDates} = generateChartData(dateTypeMap[$(this).find('input[type="radio"]:checked').siblings('span').text()]);
+                chartMap[canvasId] = createLineChart(canvasId, labels,
+                    [
+                        {label: '전체', borderColor: '#4DA6FF', data: randomData(labels.length)},
+                        {label: 'Windows', borderColor: '#FF704D', data: randomData(labels.length)},
+                        {label: 'MAC', borderColor: '#FFE680', data: randomData(labels.length, 100, 1000), _min: 100, _max: 1000},
+                        {label: 'AOS', borderColor: '#00CC99', data: randomData(labels.length, 100, 1000), _min: 100, _max: 1000},
+                        {label: 'iOS', borderColor: '#9999FF', data: randomData(labels.length, 100, 1000), _min: 100, _max: 1000},
+                    ],
+                    {tooltipDates}
+                );
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="wrap">
+        <header></header>
+
+        <aside></aside>
+
+        <main>
+            <form action="#" class="box_content">
+                <section class="tit_box">
+                    <h2>캡쳐 시도</h2>
+                </section>
+                <section class="box_xtem">
+                    <div action="#" class="form_box search">
+                        <fieldset class="form_field">
+                            <legend>캡쳐 시도 검색</legend>
+                            <div class="form_row">
+                                <label>SP 검색</label>
+                                <div class="form_item">
+                                    <div class="select_box md">
+                                        <button type="button" class="val" aria-haspopup="listbox" aria-expanded="false" aria-label="SP 검색 옵션 선택"></button>
+                                        <ul class="options" role="listbox">
+                                            <li role="option" aria-selected="true" tabindex="0">전체</li>
+                                            <li role="option" aria-selected="false" tabindex="-1">SP명 1</li>
+                                            <li role="option" aria-selected="false" tabindex="-1">SP명 2</li>
+                                            <li role="option" aria-selected="false" tabindex="-1">SP명 3</li>
+                                            <li role="option" aria-selected="false" tabindex="-1">SP명 4</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form_row date_tab">
+                                <label>기간 설정</label>
+                                <div class="form_item fx_no">
+                                    <input type="text" class="datepicker md">
+                                    <span class="txt">~</span>
+                                    <input type="text" class="datepicker md">
+                                </div>
+                                <div class="chk_tab chk_chartDate" data-chart="chart_line">
+                                    <label class="item">
+                                        <input type="radio" name="date_type-chk" checked>
+                                        <span>일간</span>
+                                    </label>
+                                    <label class="item">
+                                        <input type="radio" name="date_type-chk">
+                                        <span>월간</span>
+                                    </label>
+                                    <label class="item">
+                                        <input type="radio" name="date_type-chk">
+                                        <span>연간</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <button type="submit" class="btn dark">검색</button>
+                    </div>
+                </section>
+                <section class="box_item">
+                    <div class="chart_box loading_inBox">
+                        <div class="tit_box">
+                            <h3>DRM 인증 추이</h3>
+                            <div class="chart_legend"></div>
+                        </div>
+                        <canvas id="chart_line"></canvas>
+                    </div>
+                    <div class="table_box">
+                        <div class="table_top">
+                            <p class="tot">총 <span>15,609</span>건</p>
+                            <button type="button" class="btn wh ico_rt ico_excel confirm_open" data-type="excel">엑셀 다운로드</button>
+                        </div>
+                        <div class="table_content type2"></div>
+                    </div>
+                    <div class="page_area"></div>
+                </section>
+            </form>
+        </main>
+    </div>
+</body>
+</html>

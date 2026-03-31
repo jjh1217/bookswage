@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bookswage 통합 보안 관제 시스템</title>
+
+    <!-- open graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://b2b.bookswage.com/admin">
+    <meta property="og:title" content="bookswage 통합 보안 관제 시스템">
+    <meta property="og:description" content="콘텐츠 보호, 사용자 인증, 데이터 유출 방지를 통합 관리하는 bookswage 보안 관제 시스템. 대시보드와 통계를 통해 운영 현황을 한눈에 확인하세요.">
+    <meta property="og:image" content="https://b2b.bookswage.com/assets/img/sns_logo.png">
+
+    <!-- favicon -->
+    <link rel="icon" href="../assets/img/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="../assets/img/favicon/site.webmanifest">
+
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="../assets/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="../assets/css/common.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+    <!-- script -->
+    <script type="text/javascript" src="./assets/js/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="./assets/js/jquery-migrate-1.4.1.min.js"></script>
+    <script type="text/javascript" src="./assets/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="./assets/js/common.js"></script>
+
+    <script>
+        $(function(){
+            //switch - 전체 선택 / 해제
+            $(document).on('change', '.switch_item input[type="checkbox"]', function () {
+                const switchChk = $(this).closest('.switch_item');
+                if ($(this).closest('label').hasClass('all')) {
+                    switchChk.find('input[type="checkbox"]').prop('checked', $(this).prop('checked'));
+                } else {
+                    switchChk.find('.all > input[type="checkbox"]').prop('checked',
+                        switchChk.find('.list input[type="checkbox"]').length ===
+                        switchChk.find('.list input[type="checkbox"]:checked').length
+                    );
+                }
+            });
+
+            //switch - 선택 유형 추가 / 삭제
+            $(document).on('click', '.switch_box .arrow > button', function () {
+                var $pickWrap = $(this).closest('.switch_box').find('.switch_item.pick .list p');
+                var $choiceWrap = $(this).closest('.switch_box').find('.switch_item.choice .list p');
+                var $choiceAll = $(this).closest('.switch_box').find('.switch_item.choice .all input');
+
+                if ($(this).hasClass('add')) { //추가
+                    $pickWrap.find('label').each(function () {
+                        let labelTxt = $(this).text().trim();
+                        let isChecked = $(this).find('input').is(':checked');
+                        let $existing = $choiceWrap.find('label').filter(function () {
+                            return $(this).text().trim() === labelTxt;
+                        });
+                        if (isChecked) {
+                            if ($existing.length) {
+                                $existing.find('input').prop('checked', true);
+                            } else {
+                                let pickIndex = $pickWrap.find('label').index(this);
+                                let inserted = false;
+                                $choiceWrap.find('label').each(function () {
+                                    let currentText = $(this).text().trim();
+                                    let currentIndex = $pickWrap.find('label').index(
+                                        $pickWrap.find('label').filter(function () {
+                                            return $(this).text().trim() === currentText;
+                                        })
+                                    );
+                                    if (pickIndex < currentIndex) {
+                                        $('<label><input type="checkbox" checked>' + labelTxt + '</label>').insertBefore(this);
+                                        inserted = true;
+                                        return false;
+                                    }
+                                });
+                                if (!inserted) $('<label><input type="checkbox" checked>' + labelTxt + '</label>').appendTo($choiceWrap);
+                            }
+                        } else if ($existing.length) {
+                            $existing.remove();
+                        }
+                    });
+                    $choiceAll.prop('checked', $choiceWrap.find('input:checked').length > 0);
+                } else if ($(this).hasClass('del')) { //삭제
+                    $choiceWrap.find('input:checked').each(function () {
+                        $(this).closest('label').remove();
+                    });
+                    $choiceAll.prop('checked', $choiceWrap.find('input:checked').length > 0);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="wrap">
+        <header></header>
+
+        <aside></aside>
+
+        <main>
+            <form action="#"  class="box_content">
+                <section class="tit_box">
+                    <h2>알림 등록</h2>
+                </section>
+    
+                <section class="box_item pt_0">
+                    <div class="form_box line">
+                        <fieldset class="form_field">
+                            <legend>알림 등록</legend>
+                            <div class="form_row">
+                                <label class="req">이름</label>
+                                <div class="form_item">
+                                    <input type="text" placeholder="이름을 입력하세요.">
+                                </div>
+                            </div>
+                            <div class="form_row">
+                                <label class="req">메일 주소</label>
+                                <div class="form_item">
+                                    <input type="text">
+                                    <span class="txt">@</span>
+                                    <input type="text">
+                                </div>
+                            </div>
+                            <div class="form_row">
+                                <label class="req">회사명</label>
+                                <div class="form_item">
+                                    <input type="text" placeholder="회사명을 입력하세요.">
+                                </div>
+                            </div>
+                            <div class="form_row">
+                                <label class="req">소속</label>
+                                <div class="form_item">
+                                    <input type="text" placeholder="소속을 입력하세요.">
+                                </div>
+                            </div>
+                            <div class="form_row">
+                                <label class="req">발송 상태</label>
+                                <div class="chk_box">
+                                    <label class="item">
+                                        <input type="radio" name="send-chk" id="send-ok" checked>
+                                        <span>사용</span>
+                                    </label>
+                                    <label class="item">
+                                        <input type="radio" name="send-chk" id="send-no">
+                                        <span>사용 안함</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form_line"></div>
+                            <div class="form_row mb_12">
+                                <label class="req wn_auto w_full">알림 유형</label>
+                                <ul class="switch_box">
+                                    <li>
+                                        <p class="txt">메일을 받을 알람 유형을 선택해 주세요.</p>
+                                        <div class="switch_item pick">
+                                            <label class="all"><input type="checkbox">전체 유형</label>
+                                            <div class="list">
+                                                <p>
+                                                    <label><input type="checkbox">비정상 인증</label>
+                                                    <label><input type="checkbox">Web 캡쳐 시도</label>
+                                                    <label><input type="checkbox">App 캡쳐 시도</label>
+                                                    <label><input type="checkbox">인증 차단 시도</label>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="arrow">
+                                        <button type="button" class="add"></button>
+                                        <button type="button" class="del"></button>
+                                    </li>
+                                    <li>
+                                        <p class="txt">선택한 알람 유형 목록입니다.</p>
+                                        <div class="switch_item choice">
+                                            <label class="all"><input type="checkbox">선택 유형</label>
+                                            <div class="list"><p></p></div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="form_row">
+                                <label class="req wn_auto w_full">대상 SP</label>
+                                <ul class="switch_box">
+                                    <li>
+                                        <p class="txt">SP 중 알림을 받을 대상을 선택해 주세요.</p>
+                                        <div class="switch_item pick">
+                                            <label class="all"><input type="checkbox">전체 SP</label>
+                                            <div class="list">
+                                                <p>
+                                                    <label><input type="checkbox">오픈마켓</label>
+                                                    <label><input type="checkbox">두란노서원</label>
+                                                    <label><input type="checkbox">북틀</label>
+                                                    <label><input type="checkbox">하늘책방</label>
+                                                    <label><input type="checkbox">든든한울타리</label>
+                                                    <label><input type="checkbox">노블레스서비스</label>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="arrow">
+                                        <button type="button" class="add"></button>
+                                        <button type="button" class="del"></button>
+                                    </li>
+                                    <li>
+                                        <p class="txt">선택한 SP 목록입니다.</p>
+                                        <div class="switch_item choice">
+                                            <label class="all"><input type="checkbox">메일 발송 SP</label>
+                                            <div class="list"><p></p></div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </fieldset>
+                        <div class="btn_box">
+                            <button type="button" class="btn gray">취소</button>
+                            <button type="submit" class="btn primary">등록</button>
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </main>
+    </div>
+
+    <div class="confirm_wrap">
+        <section class="confirm_box sm">
+            <div class="confirm_tit">
+                <h2>등록 완료</h2>
+                <button type="button" class="close confirm_close"></button>
+            </div>
+            <div class="confirm_content">
+                <p>정상적으로 등록이 <span class="c_primary">완료</span>되었습니다.</p>
+                <div class="btn_box confirm_btn">
+                    <button type="button" class="btn gray confirm_close">확인</button>
+                </div>
+            </div>
+        </section>
+    </div> 
+</body>
+</html>

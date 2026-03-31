@@ -1,33 +1,45 @@
 $(function(){
+    //include - 로컬 환경에서만 사용
     $('header').load('../../inclube/header.html');
     $('aside').load('../../inclube/aside.html', function(){
         $.getJSON('../../assets/js/menu.json', function(menuData){
             menuInit(menuData);
         });
     });
-    $('.table_box').load('../../inclube/table.html');
-    $('.page_btw').load('../../inclube/page.html');
+    $('.table_content').each(function() {
+        if ($(this).hasClass('no_table') || $(this).hasClass('no_sc')) return;
+        if ($(this).hasClass('type2')) {
+            $(this).load('../../inclube/table2.html');
+        } else {
+            $(this).load('../../inclube/table.html');
+        }
+    });
+    $('.page_area').load('../../inclube/page.html');
 
-    //menu active 함수
+    //js 호출 - 로컬 환경에서만 사용
+    $.getScript('../../assets/js/confirm.js');
+    $.getScript('../../assets/js/select.js');
+
+    //menu - on 함수
     function menuInit(menuData){
         const currentPath = window.location.pathname.split("/").pop();
         let currentMenu = null;
-        let activePageUrl = currentPath;
+        let onPageUrl = currentPath;
 
         //menu 및 현재 page 찾기
         for(const menu of menuData.menu){
             const page = menu.pages.find(p => p.url === currentPath);
             if(page){
                 currentMenu = menu;
-                if(page.parent) activePageUrl = page.parent;
+                if(page.parent) onPageUrl = page.parent;
                 break;
             }
         }
         if(!currentMenu) return;
 
-        //gnb - active
-        $('.gnb li a.item').removeClass('active');
-        currentMenu.pages.forEach(p => $('.gnb li a.item[href$="' + p.url + '"]').addClass('active'));
+        //menu gnb - on
+        $('.gnb li a.item').removeClass('on');
+        currentMenu.pages.forEach(p => $('.gnb li a.item[href$="' + p.url + '"]').addClass('on'));
 
         //menuSub - 생성
         if(currentMenu.icon !== "ico_dashboard"){
@@ -37,10 +49,10 @@ $(function(){
                                 </nav>`;
             $('aside .menu').after(menuSubHtml);
 
-            // lnb - 생성 (parent 없는 페이지만)
+            //menuSub lnb - 생성 (parent 없는 페이지만)
             const lnbHtml = currentMenu.pages
                 .filter(p => !p.parent)
-                .map(p => `<li><a href="../${p.url}" class="item ${p.url === activePageUrl ? 'active' : ''}">${p.name}</a></li>`)
+                .map(p => `<li><a href="../${p.url}" class="item ${p.url === onPageUrl ? 'on' : ''}">${p.name}</a></li>`)
                 .join('');
             $('aside .menuSub .lnb').html(lnbHtml);
         }
@@ -50,9 +62,9 @@ $(function(){
     $(document).on('mouseenter', '.menu', function() {
         if (!$(this).hasClass('open')) {
             $(this).css({
-                width: '190px',
-                padding: '15px 20px',
-                boxShadow: '6px 0 8px 0 rgba(0, 0, 0, 0.15)'
+                width: '240px',
+                padding: '8px',
+                borderRight: '1px solid #E6E8F1'
             });
             $(this).find('.item > span').removeClass('vis_hidden');
         }
@@ -62,127 +74,44 @@ $(function(){
     $(document).on('mouseleave', '.menu', function() {
         if (!$(this).hasClass('open')) {
             $(this).css({
-                width: '70px',
-                padding: '15px',
-                boxShadow: 'none'
+                width: '64px',
+                padding: '8px',
+                borderRight: 'none'
             });
             $(this).find('.item > span').addClass('vis_hidden');
         }
     });
 
     //menu - open toggle
-    $(document).on('click', '.menu .ico_hamburger', function() {
+    $(document).on('click', '.menu .menu_toggle', function() {
         const $menu = $(this).closest('.menu');
         const $aside = $(this).closest('aside');
         $menu.toggleClass('open')
         if ($menu.hasClass('open')) {
-            $aside.css('padding-left', '190px');
+            $aside.css('padding-left', '240px');
             $menu.css({
-                width: '190px',
-                padding: '15px 20px',
+                width: '240px',
+                padding: '8px',
                 boxShadow: 'none'
             });
             $menu.find('.item > span').removeClass('vis_hidden');
         } else {
-            $aside.css('padding-left', '70px');
+            $aside.css('padding-left', '64px');
             $menu.css({
-                width: '70px',
-                padding: '15px'
+                width: '64px',
+                padding: '8px'
             });
             $menu.find('.item > span').addClass('vis_hidden');
         }
     });
 
-    //confirm - 열기
-    $(document).on('click', '.confirm_open', function(){
-        $('.confirm_wrap').fadeIn(200);
-    });
-
-    //confirm - 닫기
-    $(document).on('click', '.confirm_close', function(){
-        $(this).closest('.confirm_wrap').fadeOut(200);
-    });
-
-    //confirm - textarea 입력 시 버튼 활성화/비활성화
-    $(document).on('input', '.confirm_box > textarea', function(){
-        const $btn = $(this).closest('.confirm_box').find('.btn_confirm');
-        $btn.toggleClass('off', $.trim($(this).val()) === '');
-    });
-
-    //popup - 열기
-    $(document).on('click', '.popup_open', function(){
-        $('.popup_box').fadeIn(200);
-    });
-
-    //popup - 닫기
-    $(document).on('click', '.popup_close', function(){
-        $(this).closest('.popup_box').fadeOut(200);
-    });
-
-    //alarm - 열기 & 닫기
-    $(document).on('click', 'header .ico_alarm_header', function(){
+    //header user - 열기 & 닫기
+    $(document).on('click', 'header .ico_user', function(){
         $(this).toggleClass('open');
         if($(this).hasClass('open')) {
-            $('.alarm_box').fadeIn(200);
+            $('.header_user').fadeIn(200);
         } else{
-            $('.alarm_box').fadeOut(200);
-        }
-    });
-
-    //user - 열기 & 닫기
-    $(document).on('click', 'header .ico_admin_header', function(){
-        $(this).toggleClass('open');
-        if($(this).hasClass('open')) {
-            $('.user_stats').fadeIn(200);
-        } else{
-            $('.user_stats').fadeOut(200);
-        }
-    });
-
-    //tab - 클릭
-    $(document).on('click', '.tab_box .item', function(e) {
-        e.preventDefault();
-        $(this).closest('.tab_box').find('.item').removeClass('active').attr('aria-selected', 'false');
-        $(this).addClass('active').attr('aria-selected', 'true');
-        $(this).focus();
-    });
-
-    //tab - 키보드 제어
-    $(document).on('keydown', '.tab_box .item', function(e) {
-        var $tabs = $(this).closest('.tab_box').find('.item');
-        var tabIdx = $tabs.index(this);
-        var lastIdx = $tabs.length - 1;
-        switch (e.key) {
-            case 'ArrowRight':
-            case 'ArrowDown':
-                e.preventDefault();
-                tabIdx = tabIdx === lastIdx ? 0 : tabIdx + 1;
-                $tabs.eq(tabIdx).focus();
-            break;
-
-            case 'ArrowLeft':
-            case 'ArrowUp':
-                e.preventDefault();
-                tabIdx = tabIdx === 0 ? lastIdx : tabIdx - 1;
-                $tabs.eq(tabIdx).focus();
-            break;
-
-            case 'Home':
-                e.preventDefault();
-                $tabs.eq(0).focus();
-            break;
-
-            case 'End':
-                e.preventDefault();
-                $tabs.eq(lastIdx).focus();
-            break;
-
-            case 'Enter':
-            case ' ':
-                e.preventDefault();
-                $tabs.removeClass('active').attr('aria-selected', 'false');
-                $(this).addClass('active').attr('aria-selected', 'true');
-            break;
+            $('.header_user').fadeOut(200);
         }
     });
 
@@ -191,154 +120,156 @@ $(function(){
         $(this).val($(this).val().replace(/[^0-9]/g, ''));
     });
 
-    //select - 전체 닫기
-    function closeAllSelect() {
-        $('.select_box').removeClass('open');
-        $('.select_box .val').attr('aria-expanded', 'false');
-        $('.select_box .options').attr('aria-hidden', 'true');
-    }
-
-    //select - selected 값 설정 및 placeholder 설정
-    $('.select_box').each(function(){
-        const $val = $(this).find('.val');
-        const $selected = $(this).find('[role="option"][aria-selected="true"]');
-        if ($selected.length) {
-            $val.text($selected.text()).removeClass('c_gray8');
-        } 
-        else if ($(this).data('placeholder')) {
-            $val.text($(this).data('placeholder')).addClass('c_gray8');
-        }
-        $(this).find('.options').attr('aria-hidden', 'true');
-    });
-
-    //select - 열기
-    function openSelect($box, moveFocus = false) {
-        if ($box.hasClass('dsb')) return;
-        closeAllSelect();
-        $box.addClass('open');
-        const $btn = $box.find('.val');
-        $btn.attr('aria-expanded', 'true');
-        $box.find('.options').attr('aria-hidden', 'false');
-        if (moveFocus) {
-            const $selected = $box.find('[role="option"][aria-selected="true"]');
-            const $target = $selected.length ? $selected : $box.find('[role="option"]').first();
-            $target.focus();
-        }
-    }
-
-    //select - toggle
-    $(document).on('click', '.select_box .val', function(e){
-        e.stopPropagation();
-        const $selectBox = $(this).closest('.select_box');
-        if ($selectBox.hasClass('dsb')) return;
-        $selectBox.hasClass('open') ? closeAllSelect() : openSelect($selectBox);
-    });
-
-    //select - 옵션 선택 함수 (마우스)
-    function selectOption($option) {
-        const $selectBox = $option.closest('.select_box');
-        const $selectVal = $selectBox.find('.val');
-        $selectBox.find('[role="option"]').attr('aria-selected', 'false').attr('tabindex', -1);
-        $option.attr('aria-selected', 'true').attr('tabindex', 0);
-        $selectVal.text($option.text()).removeClass('c_gray8');
-        $selectBox.trigger('option:selected', [$option.text(), $option]);
-        closeAllSelect();
-        $selectVal.focus();
-    }
-
-    //select - 옵션 선택 (마우스)
-    $(document).on('click', '.select_box .options > li[role="option"]', function(e){
-        e.stopPropagation();
-        selectOption($(this));
-    });
-
-    //select - 버튼 키보드 제어
-    $(document).on('keydown', '.select_box .val', function(e){
-        const $selectBox = $(this).closest('.select_box');
-        switch (e.key) {
-            case 'Tab':
-                closeAllSelect();
-            break;
-            case 'ArrowDown':
-            case 'Enter':
-            case ' ':
-                e.preventDefault();
-                openSelect($selectBox, true);
-            break;
-            case 'Escape':
-                closeAllSelect();
-            break;
-        }
-    });
-
-    //select - 옵션 키보드 제어
-    $(document).on('keydown', '.select_box .options > li[role="option"]', function(e){
-        const $options = $(this).closest('.select_box').find('[role="option"]');
-        let index = $options.index(this);
-        switch (e.key) {
-            case 'Tab':
-                closeAllSelect();
-            break;
-            case 'ArrowDown':
-                e.preventDefault();
-                index = (index + 1) % $options.length;
-                $options.eq(index).focus();
-            break;
-            case 'ArrowUp':
-                e.preventDefault();
-                index = (index - 1 + $options.length) % $options.length;
-                $options.eq(index).focus();
-            break;
-            case 'Enter':
-            case ' ':
-                e.preventDefault();
-                selectOption($(this));
-            break;
-            case 'Escape':
-                e.preventDefault();
-                closeAllSelect();
-                $(this).closest('.select_box').find('.val').focus();
-            break;
+    //input - 비밀번호 숨기기 & 보기
+    $(document).on('click', '.form_item .eye', function() {
+        $(this).toggleClass('on');
+        if(!$(this).hasClass('on')) {
+            $(this).closest('.form_item').find('input').attr('type', 'password');
+        } else {
+            $(this).closest('.form_item').find('input').attr('type', 'text');
         }
     });
 
     //table - all check 
-    $(document).on('change', '.tb_chk input[type="checkbox"]', function () {
-        if ($(this).closest('.tb_chk').hasClass('all_chk')) {
-            $('tbody .tb_chk input[type="checkbox"]').prop('checked', $(this).prop('checked'));
+    $(document).on('change', '.table_item input[type="checkbox"]', function () {
+        const tableChk = $(this).closest('.table_item');
+        if ($(this).closest('label').hasClass('chk_all')) {
+            tableChk.find('tbody td input[type="checkbox"]').prop('checked', $(this).prop('checked'));
         } else {
-            $('.all_chk input[type="checkbox"]')
-            .prop(
+            tableChk.find('.chk_all > input[type="checkbox"]').prop(
                 'checked',
-                $('tbody .tb_chk input[type="checkbox"]').length ===
-                $('tbody .tb_chk input[type="checkbox"]:checked').length
+                tableChk.find('tbody td input[type="checkbox"]').length ===
+                tableChk.find('tbody td input[type="checkbox"]:checked').length
             );
         }
     });
 
     //table - href 이동(추후 삭제)
-    $(document).on('click', '.table_box tbody tr', function () {
-        const t_href = $(this).closest('.table_box').data('href');
+    $(document).on('click', '.table_content tbody tr', function () {
+        const t_href = $(this).closest('.table_content').data('href');
         if (t_href) {
-            window.location.href = t_href + ".html";
+            loadingShow();
+            setTimeout(function() {
+                window.location.href = t_href + ".html";
+            }, 2500);
         } else {return;}
+    });
+
+    //table - rowspan 그룹 hover 효과
+    $(document).on('mouseenter mouseleave', '.table_content.type2 tr', function(e) {
+        const $firstTr = $(this).find('td[rowspan]').length ? $(this) : $(this).prevAll('tr:has(td[rowspan])').first();
+        const rowNum = +$firstTr.find('td[rowspan]').first().attr('rowspan');
+        const $rowGroup = $firstTr.add($firstTr.nextAll().slice(0, rowNum - 1));
+        $rowGroup.find('td').css('background', e.type === 'mouseenter' ? 'var(--color-blue2)' : '');
+    });
+
+    //datepicker - 초기 설정
+    const today = new Date();
+
+    //datepicker - 한글 로케일 적용
+    $(".datepicker").datepicker({
+        dateFormat: "yy.mm.dd",
+        showAnim: "slideDown",
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        showMonthAfterYear: true,
+        monthNames: ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+        monthNamesShort: ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+        dayNamesMin: ["일","월","화","수","목","금","토"],
+        yearRange: (today.getFullYear() - 5) + ":" + today.getFullYear()
+    });
+
+    //datepicker - tab 클릭 시 날짜 설정
+    $('input[name="date_type-chk"]').on('change', function() {
+        var $start = $(this).closest('.date_tab').find('input.datepicker').eq(0);
+        var $end = $(this).closest('.date_tab').find('input.datepicker').eq(1);
+        var tabVal = $(this).closest('label').find('span').text();
+        var today = new Date();
+        var startDate = new Date();
+        var endDate = today;
+
+        if(tabVal === '1일') {
+            startDate = today;
+            endDate = today;
+        } else if(tabVal === '1주일') {
+            startDate.setDate(today.getDate() - 7);
+        } else if(tabVal === '1개월') {
+            startDate.setMonth(today.getMonth() - 1);
+        } else if(tabVal === '전체') {
+            startDate = '';
+            endDate = '';
+        }
+
+        if(startDate) $start.datepicker('setDate', startDate);
+        else $start.val('');
+        if(endDate) $end.datepicker('setDate', endDate);
+        else $end.val('');
+    });
+
+    //datepicker - 로드 시 date_tab check 값에 따라 날짜 설정
+    $('.date_tab').each(function () {
+        $('input[name="date_type-chk"]:checked').trigger('change');
     });
 
     //외부 영역 클릭 시
     $(document).on('click', function (e) {
-        //alarm - 닫기
-        if (!$(e.target).closest('.ico_alarm_header, .alarm_box').length) {
-            $('.ico_alarm_header').removeClass('open');
-            $('.alarm_box').stop(true, true).fadeOut(200);
+        //user - 닫기
+        if (!$(e.target).closest('header .ico_user').length) {
+            $('header .ico_user').removeClass('open');
+            $('.header_user').stop(true, true).fadeOut(200);
         }
 
-        //user - 닫기
-        if (!$(e.target).closest('.ico_admin_header, .user_stats').length) {
-            $('.ico_admin_header').removeClass('open');
-            $('.user_stats').stop(true, true).fadeOut(200);
-        }
+        //select - 내부 클릭 시 동작 없음
+        if ($(e.target).closest('.select_box').length) return;
 
         //select - 닫기
         closeAllSelect();
     });
 });
+
+//loading - 열기
+function loadingShow($trigger) {
+    const loadingHtml = `
+        <div class="loading_wrap">
+            <div class="loading_box">
+                <ol>
+                    <li class="item"></li>
+                    <li class="item"></li>
+                    <li class="item"></li>
+                    <li class="item"></li>
+                    <li class="item"></li>
+                    <li class="item"></li>
+                    <li class="item"></li>
+                    <li class="item"></li>
+                </ol>
+            </div>
+        </div>`;
+    if ($trigger && $trigger.length) {
+        const $inBox = $trigger.closest('.loading_inBox');
+        if ($inBox.length) {
+            $inBox.append(loadingHtml);
+            $inBox.find('.loading_wrap').fadeIn(200);
+            return;
+        }
+    }
+    const $loadingEl = $(loadingHtml).addClass('full');
+    $('body').append($loadingEl);
+    $('body > .loading_wrap').fadeIn(200);
+}
+
+//loading - 닫기
+function loadingHide($trigger) {
+    if ($trigger && $trigger.length) {
+        const $inBox = $trigger.closest('.loading_inBox');
+        if ($inBox.length) {
+            $inBox.find('.loading_wrap').fadeOut(200, function(){
+                $inBox.find('.loading_wrap').remove();
+            });
+            return;
+        }
+    }
+    $('body > .loading_wrap').fadeOut(200, function(){
+        $('body > .loading_wrap').remove();
+    });
+}

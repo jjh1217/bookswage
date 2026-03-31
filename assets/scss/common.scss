@@ -1,9 +1,9 @@
 @use 'variables' as *;
 
 :root {
-    @each $name, $value in $colors {--color-#{$name}: #{$value};}
     --font-family: 'Pretendard', sans-serif;
     --transition-base: 0.3s ease;
+    @each $name, $value in $colors {--color-#{$name}: #{$value};}
 }
 
 /* reset */
@@ -59,11 +59,18 @@ fieldset {
 }
 input::placeholder,
 textarea::placeholder {
-    color: var(--color-gray6);
+    color: var(--color-gray8);
 }
 select {cursor: pointer;}
 input[type='checkbox'],
-input[type='radio'],
+input[type='radio'] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
 fieldset > legend,
 table > caption {
     position: absolute;
@@ -97,8 +104,8 @@ q:before, q:after {
 
 /* scroll */
 *::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
 }
 *::-webkit-scrollbar-thumb {
     border-radius: 999px;
@@ -151,19 +158,16 @@ q:before, q:after {
     transition: opacity var(--transition-base);
 }
 .round {border-radius: 999px !important;}
+.b_gy {border: 1px solid var(--color-gray4);}
+.br_rd {
+    border: 1px solid var(--color-gray4);
+    border-radius: 20px;
+}
 
 /* font */
 @font-face {
   font-family: 'Pretendard';
   src: url('../font/PretendardVariable.woff2') format('woff2-variations');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Inter';
-  src: url('../font/InterVariable.woff2') format('woff2-variations');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -196,72 +200,14 @@ q:before, q:after {
     }
 }
 
-/* icon */
-$icons: (
-    hamburger: (hover: true, active: wh),
-    dashboard: (hover: true, active: wh),
-    client: (hover: true, active: wh),
-    sales: (hover: true, active: wh),
-    user: (hover: true, active: wh),
-    administer: (hover: true, active: wh),
-    alarm: (hover: true, active: wh),
-    stat: (hover: true, active: wh),
-    calculate: (hover: true, active: wh),
-    lock: (hover: false, active: none),
-    admin_header: (hover: false, active: none),
-    alarm_header: (hover: false, active: on),
-    search: (hover: false, active: none),
-    figure_add: (hover: false, active: none),
-    figure_coupon: (hover: false, active: none),
-    figure_join: (hover: false, active: none),
-    pdfdown: (hover: false, active: none)
-);
-
-@each $icon, $config in $icons {
-    $hover: map-get($config, hover);
-    $active: map-get($config, active);
-    .ico_#{$icon} {
-        display: inline-block;
-        background-repeat: no-repeat;
-        background-image: url("../img/ico_#{$icon}.svg");
-
-        /* active 상태 */
-        @if $active != none {
-            &.active,
-            .active > & {
-                @if $active == wh {
-                    background-image: url("../img/ico_#{$icon}_wh.svg");
-                } @else if $active == on {
-                    background-image: url("../img/ico_#{$icon}_on.svg");
-                }
-            }
-        }
-
-        /* hover 상태 */
-        @if $hover {
-            &:hover,
-            :hover > & {
-                background-image: url("../img/ico_#{$icon}_wh.svg");
-            }
-
-            /* active + hover (active 우선) */
-            &.active:hover,
-            :hover > &.active {
-                @if $active == on {
-                    background-image: url("../img/ico_#{$icon}_on.svg");
-                } @else {
-                    background-image: url("../img/ico_#{$icon}_wh.svg");
-                }
-            }
-        }
-    }
-}
-
 /*  utility - width / height / space */
 .w_auto {width: auto !important;}
+.w_full {width: 100% !important;}
 .wn_auto {min-width: auto !important;}
 .h_auto {height: auto !important;}
-@for $i from 0 through 40 {
+.m_auto {margin: 0 auto !important;}
+.b_base {border: 1px solid var(--color-gray4);}
+@for $i from 0 through 50 {
     .w_#{$i * 10} {width: #{$i * 10}px !important;}
     .wx_#{$i * 10} {max-width: #{$i * 10}px !important;}
     .wn_#{$i * 10} {min-width: #{$i * 10}px !important;}
@@ -269,38 +215,44 @@ $icons: (
     .hx_#{$i * 10} {max-height: #{$i * 10}px !important;}
     .hn_#{$i * 10} {min-height: #{$i * 10}px !important;}
 }
-@for $i from 1 through 100 {
-    @if $i < 10 or ($i % 5 == 0) {
+@for $i from 1 through 90 {
+    @if $i <= 20 or ($i > 20 and $i % 5 == 0) {
         .wp_#{$i} {
             width: $i * 1% !important;
         }
     }
 }
-@for $i from 0 through 10 {
-    .p_#{$i * 10} {padding: #{$i * 10}px !important;}
-    .pt_#{$i * 10} {padding-top: #{$i * 10}px !important;}
-    .pb_#{$i * 10} {padding-bottom: #{$i * 10}px !important;}
-    .pl_#{$i * 10} {padding-left: #{$i * 10}px !important;}
-    .pr_#{$i * 10} {padding-right: #{$i * 10}px !important;}
-    .py_#{$i * 10} {padding-top:#{$i * 10}px !important; padding-bottom: #{$i * 10}px !important;}
-    .px_#{$i * 10} {padding-left: #{$i * 10}px !important; padding-right: #{$i * 10}px !important;}
-    .m_#{$i * 10} {margin: #{$i * 10}px !important;}
-    .mt_#{$i * 10} {margin-top: #{$i * 10}px !important;}
-    .mb_#{$i * 10} {margin-bottom: #{$i * 10}px !important;}
-    .ml_#{$i * 10} {margin-left: #{$i * 10}px !important;}
-    .mr_#{$i * 10} {margin-right: #{$i * 10}px !important;}
-    .my_#{$i * 10} {margin-top: #{$i * 10}px !important; margin-bottom: #{$i * 10}px !important;}
-    .mx_#{$i * 10} {margin-left: #{$i * 10}px !important; margin-right: #{$i * 10}px !important;}
-    .b_#{$i * 10} {border: #{$i * 10}px !important;}
-    .bt_#{$i * 10} {border-top: #{$i * 10}px !important;}
-    .bb_#{$i * 10} {border-bottom: #{$i * 10}px !important;}
-    .bl_#{$i * 10} {border-left: #{$i * 10}px !important;}
-    .br_#{$i * 10} {border-right: #{$i * 10}px !important;}
-    .by_#{$i * 10} {border-top: #{$i * 10}px !important; border-bottom: #{$i * 10}px !important;}
-    .bx_#{$i * 10} {border-left: #{$i * 10}px !important; border-right: #{$i * 10}px !important;}
-    .g_#{$i * 10} {gap: #{$i * 10}px !important;}
-    .rg_#{$i * 10} {row-gap: #{$i * 10}px !important;}
-    .cg_#{$i * 10} {column-gap: #{$i * 10}px !important;}
+@for $i from 0 through 50 {
+    $v: $i * 2;
+    @if $v <= 40 or $v % 10 == 0 {
+        .p_#{$v} {padding: #{$v}px !important;}
+        .pt_#{$v} {padding-top: #{$v}px !important;}
+        .pb_#{$v} {padding-bottom: #{$v}px !important;}
+        .pl_#{$v} {padding-left: #{$v}px !important;}
+        .pr_#{$v} {padding-right: #{$v}px !important;}
+        .py_#{$v} {padding-top:#{$v}px !important; padding-bottom: #{$v}px !important;}
+        .px_#{$v} {padding-left: #{$v}px !important; padding-right: #{$v}px !important;}
+        .m_#{$v} {margin: #{$v}px !important;}
+        .mt_#{$v} {margin-top: #{$v}px !important;}
+        .mb_#{$v} {margin-bottom: #{$v}px !important;}
+        .ml_#{$v} {margin-left: #{$v}px !important;}
+        .mr_#{$v} {margin-right: #{$v}px !important;}
+        .my_#{$v} {margin-top: #{$v}px !important; margin-bottom: #{$v}px !important;}
+        .mx_#{$v} {margin-left: #{$v}px !important; margin-right: #{$v}px !important;}
+        .g_#{$v}  {gap: #{$v}px !important;}
+        .rg_#{$v} {row-gap: #{$v}px !important;}
+        .cg_#{$v} {column-gap: #{$v}px !important;}
+    }
+}
+.b_0  {border: 0 !important;}
+.bt_0 {border-top: 0 !important;}
+.bb_0 {border-bottom: 0 !important;}
+.bl_0 {border-left: 0 !important;}
+.br_0 {border-right: 0 !important;}
+.by_0 {border-top: 0 !important; border-bottom: 0 !important;}
+.bx_0 {border-left: 0 !important; border-right: 0 !important;}
+@for $i from 1 through 20 {
+    .brs_#{$i} {border-radius: #{$i}px !important;}
 }
 
 /* grid */
@@ -308,13 +260,16 @@ $icons: (
 .gd_half {@include grid_box($col: repeat(2, 1fr));}
 
 /* flex */
-.fx_no {flex: none !important;}
-.fx_full {flex: 1 !important;}
 .fx_row {@include flex_row($align: center);}
 .fx_col {@include flex_col();}
 .fx_btw {@include flex_row($just: space-between, $align: center);}
 .fx_dr {flex-direction: row !important;}
 .fx_dc {flex-direction: column !important;}
+.fx_no {flex: none !important;}
+.fx_full {flex: 1 !important;}
+@for $i from 0 through 9 {
+    .fx_#{$i} {flex: #{$i * 0.1} !important;}
+}
 
 /* sort - justify / align */
 $sort_map: (
@@ -331,6 +286,55 @@ $sort_map: (
     @each $val in $values {
         .#{$prefix}_#{$val} {
             #{$prop}: #{$val} !important;
+        }
+    }
+}
+
+/* icon */
+[class^="ico_"] {
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+$type_map: (wh: "_wh", on: "_on");
+$icons: (
+    alarm_setting: (hover: true,  on: wh),
+    certify: (hover: true,  on: wh),
+    certify_rd: (hover: false, on: null),
+    cp: (hover: true,  on: wh),
+    dashboard: (hover: true,  on: wh),
+    document: (hover: true,  on: wh),
+    document_search: (hover: false, on: null),
+    document_yw: (hover: false, on: null),
+    donut: (hover: true,  on: wh),
+    download: (hover: false, on: null),
+    excel: (hover: false, on: null),
+    home: (hover: false, on: null),
+    leak: (hover: true,  on: wh),
+    msg_yw: (hover: false, on: null),
+    package: (hover: false, on: null),
+    page_break: (hover: true,  on: wh),
+    pass: (hover: false, on: null),
+    sp: (hover: true,  on: wh),
+    add_bk: (hover: false, on: null),
+    add_wh: (hover: false, on: null),
+    stop: (hover: false, on: null),
+    user: (hover: false, on: null),
+    user_del: (hover: false, on: null),
+    user_pass: (hover: false, on: null),
+    user_setting: (hover: true,  on: wh),
+    x_bk: (hover: false, on: null)
+);
+@each $icon, $cfg in $icons {
+    $hover:  map-get($cfg, hover);
+    $on: map-get($cfg, on);
+    $tm: map-get($type_map, $on);
+    .ico_#{$icon} {
+        background-image: url("../img/icon/#{$icon}.svg");
+        @if $tm {&.on, .on > & {background-image: url("../img/icon/#{$icon}#{$tm}.svg");}}
+        @if $hover {
+            &:hover, :hover > & {background-image: url("../img/icon/#{$icon}_wh.svg");}
+            &.on:hover, :hover > &.on {background-image: url("../img/icon/#{$icon}#{$tm}.svg");}
         }
     }
 }

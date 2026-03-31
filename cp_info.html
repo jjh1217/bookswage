@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bookswage 통합 보안 관제 시스템</title>
+
+    <!-- open graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://b2b.bookswage.com/admin">
+    <meta property="og:title" content="bookswage 통합 보안 관제 시스템">
+    <meta property="og:description" content="콘텐츠 보호, 사용자 인증, 데이터 유출 방지를 통합 관리하는 bookswage 보안 관제 시스템. 대시보드와 통계를 통해 운영 현황을 한눈에 확인하세요.">
+    <meta property="og:image" content="https://b2b.bookswage.com/assets/img/sns_logo.png">
+
+    <!-- favicon -->
+    <link rel="icon" href="../assets/img/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="../assets/img/favicon/site.webmanifest">
+
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="../assets/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="../assets/css/common.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+    <!-- script -->
+    <script type="text/javascript" src="./assets/js/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="./assets/js/jquery-migrate-1.4.1.min.js"></script>
+    <script type="text/javascript" src="./assets/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="./assets/js/common.js"></script>
+</head>
+<body>
+    <div class="wrap">
+        <header></header>
+
+        <aside></aside>
+        
+        <main>
+            <form action="#"  class="box_content">
+                <section class="tit_box">
+                    <h2>CP 정보</h2>
+                </section>
+    
+                <section class="box_item pt_0">
+                    <div class="form_box line">
+                        <fieldset class="form_field">
+                            <legend>CP 정보</legend>
+                            <div class="form_row">
+                                <label class="req">CP 아이디</label>
+                                <div class="form_item">
+                                    <input type="text" placeholder="아이디를 입력하세요." value="cp_om">
+                                </div>
+                            </div>
+                            <div class="form_row">
+                                <label class="req">현재 비밀번호 입력</label>
+                                <div class="form_item">
+                                    <input type="password" placeholder="현재 비밀번호를 입력하세요.">
+                                    <p class="msg c_blue3">*현재 비밀번호를 정확하게 입력하세요.</p>
+                                </div>
+                            </div>
+                            <div class="form_line"></div>
+                            <div class="form_row">
+                                <label class="req">신규 비밀번호 입력</label>
+                                <div class="form_item">
+                                    <input type="password" placeholder="비밀번호를 입력하세요.">
+                                    <button type="button" class="eye"></button>
+                                    <p class="msg c_blue3">*특수문자, 영문, 숫자를 조합하여 최소 8자 이상으로 입력하세요.</p>
+                                </div>
+                            </div>
+                            <div class="form_row">
+                                <label class="req">신규 비밀번호 확인</label>
+                                <div class="form_item">
+                                    <input type="password" placeholder="비밀번호를 한번 더 입력하세요.">
+                                    <button type="button" class="eye"></button>
+                                    <p class="msg c_blue3">*작성한 비밀번호를 한번 더 입력하세요.</p>
+                                </div>
+                            </div>
+                            <div class="form_line"></div>
+                            <div class="form_row">
+                                <label class="req">CP 명</label>
+                                <div class="form_item">
+                                    <input type="text" placeholder="CP 명을 입력하세요." value="오픈마켓 CP">
+                                </div>
+                            </div>
+                            <div class="form_row">
+                                <label class="req">파일 다운로드 도메인</label>
+                                <div class="form_item">
+                                    <input type="text" placeholder="파일 다운로드 도메인을 입력하세요. (https://asc.com/booklist)" value="https://bcd.com/">
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="btn_box">
+                            <button type="button" class="btn gray confirm_open" data-type="cancel">취소</button>
+                            <button type="button" class="btn primary confirm_open" data-type="update">수정</button>
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </main>
+    </div>s 
+</body>
+</html>

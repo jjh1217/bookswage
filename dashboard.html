@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bookswage 통합 보안 관제 시스템</title>
+
+    <!-- open graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://b2b.bookswage.com/admin">
+    <meta property="og:title" content="bookswage 통합 보안 관제 시스템">
+    <meta property="og:description" content="콘텐츠 보호, 사용자 인증, 데이터 유출 방지를 통합 관리하는 bookswage 보안 관제 시스템. 대시보드와 통계를 통해 운영 현황을 한눈에 확인하세요.">
+    <meta property="og:image" content="https://b2b.bookswage.com/assets/img/sns_logo.png">
+
+    <!-- favicon -->
+    <link rel="icon" href="../assets/img/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="../assets/img/favicon/site.webmanifest">
+
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="../assets/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="../assets/css/common.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+    <!-- script -->
+    <script type="text/javascript" src="./assets/js/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="./assets/js/jquery-migrate-1.4.1.min.js"></script>
+    <script type="text/javascript" src="./assets/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="./assets/js/common.js"></script>
+
+    <!-- chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript" src="../assets/js/chart_custom.js"></script>
+
+    <script>
+        $(function(){
+            const datasetConfig = {
+                'chart_drm': (length) => [
+                    {label: '전체', borderColor: '#4DA6FF', data: randomData(length)},
+                    {label: '비정상 인증', borderColor: '#FF704D', data: randomData(length, 100, 1000), _min: 100, _max: 1000},
+                    {label: '인증 차단', borderColor: '#FFE680', data: randomData(length, 100, 1000), _min: 100, _max: 1000},
+                ],
+                'chart_dwm': (length) => {
+                    return {
+                        datasets: [{
+                            label: '디지털 워터마크',
+                            borderColor: '#00CC99',
+                            gradient: [
+                                {stop: 0, color: 'rgba(0, 204, 153, 0.3)'},
+                                {stop: 0.5, color: 'rgba(0, 204, 153, 0.03)'},
+                                {stop: 1, color: 'rgba(0, 204, 153, 0)'},
+                            ],
+                            fill: true,
+                            data: randomData(length, 0, 3, 1),
+                            _min: 0, _max: 3, _decimal: 1
+                        }],
+                        options: {yMax: 3, yStep: 1.5, yGrid: true, hideZero: true, yPadding: 10}
+                    };
+                }
+            };
+
+            $('.chk_chartDate').each(function() {
+                const canvasId = $(this).data('chart');
+                let {labels, tooltipDates} = generateChartData(dateTypeMap[$(this).find('input[type="radio"]:checked').siblings('span').text()]);
+                if (canvasId === 'chart_dwm') {
+                    labels = labels.slice(0, 10);
+                    tooltipDates = tooltipDates.slice(0, 10);
+                }
+                const config = datasetConfig[canvasId](labels.length);
+                const datasets = Array.isArray(config) ? config : config.datasets;
+                const options = Array.isArray(config) ? {} : config.options;
+                chartMap[canvasId] = createLineChart(canvasId, labels, datasets, {...options, tooltipDates});
+            });
+
+            //chart - donut (누적 디지털 워터마크 현황)
+            createDonutChart('chart_donut',
+                [225, 173, 84, 60],
+                [
+                    {label: 'EPUB', borderColor: '#4DA6FF', backgroundColor: 'rgba(77, 166, 255, 0.2)'},
+                    {label: 'PDF', borderColor: '#FF704D', backgroundColor: 'rgba(255, 112, 77, 0.2)'},
+                    {label: 'COMIC', borderColor: '#F09D28', backgroundColor: 'rgba(240, 157, 40, 0.2)'},
+                    {label: 'AUDIO', borderColor: '#00CC99', backgroundColor: 'rgba(0, 204, 153, 0.2)'}
+                ]
+            );
+        });
+    </script>
+</head>
+<body>
+    <div class="wrap">
+        <header></header>
+
+        <aside></aside>
+
+        <main>
+            <form action="#"  class="box_content">
+                <section class="tit_box">
+                    <h2>대시보드<br><small>2026.03.26 기준</small></h2>
+                    <a href="./spill_pc.html" class="msg">
+                        <i class="ico_msg_yw"></i>
+                        <div class="info">
+                            <p>실시간 보안 이상 징후, 유출 탐지</p>
+                            <span class="normal">정상</span>
+                        </div>
+                    </a>
+                </section>
+                <section class="box_item pt_0 g_40">
+                    <article class="dash_detect">
+                        <h3>보안 관제 탐지<span>2026년 03월</span></h3>
+                        <ul class="group">
+                            <li>
+                                <h4>이상 징후 탐지</h4>
+                                <div class="item">
+                                    <p>
+                                        <span>비정상 인증 시도</span>
+                                        <span><strong>0</strong> 건</span>
+                                    </p>
+                                </div>
+                            </li>
+                            <li>
+                                <h4>인증 차단 탐지</h4>
+                                <div class="item">
+                                    <p>
+                                        <span>차단 대상 인증 시도</span>
+                                        <span><strong>153</strong> 건</span>
+                                    </p>
+                                </div>
+                            </li>
+                            <li>
+                                <h4>유출 탐지</h4>
+                                <div class="item">
+                                    <p>
+                                        <span>Wep 캡쳐 시도</span>
+                                        <span><strong>12</strong> 건</span>
+                                    </p>
+                                    <p>
+                                        <span>App 캡쳐 시도</span>
+                                        <span><strong>43</strong> 건</span>
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
+                    </article>
+                    <article class="fx_row ai_normal g_16">
+                        <ul class="dash_accrue">
+                            <li class="item">
+                                <i class="ico_document_yw"></i>
+                                <div class="num">
+                                    <h3>누적 콘텐츠 수</h3>
+                                    <p><strong>1,498,878</strong> 건</p>
+                                </div>
+                            </li>
+                            <li class="line"></li>
+                            <li class="item">
+                                <i class="ico_certify_rd"></i>
+                                <div class="num">
+                                    <h3>누적 인증 수</h3>
+                                    <p><strong>9,498,878</strong> 건</p>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="dash_period">
+                            <span>Daily</span>
+                            <h3>당일 인증 수</h3>
+                            <strong>235,000</strong>
+                            <p>2025-11-07</p>
+                        </div>
+                        <div class="dash_period">
+                            <span>Weekly</span>
+                            <h3>주간 인증 수</h3>
+                            <strong>500,000</strong>
+                            <p>2025-11-01 ~ 2025-11-07</p>
+                        </div>
+                        <div class="dash_period">
+                            <span>Monthly</span>
+                            <h3>월간 인증 수</h3>
+                            <strong>1,600,255</strong>
+                            <p>2025-11</p>
+                        </div>
+                    </article>
+                    <article class="chart_box loading_inBox">
+                        <div class="tit_box pr_0">
+                            <h3>DRM 인증 추이</h3>
+                            <div class="fx_row g_30">
+                                <div class="chart_legend"></div>
+                                <div class="chk_tab chk_chartDate b_gy" data-chart="chart_drm">
+                                    <label class="item">
+                                        <input type="radio" name="drm_date-chk" checked>
+                                        <span>일간</span>
+                                    </label>
+                                    <label class="item">
+                                        <input type="radio" name="drm_date-chk">
+                                        <span>주간</span>
+                                    </label>
+                                    <label class="item">
+                                        <input type="radio" name="drm_date-chk">
+                                        <span>월간</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <canvas id="chart_drm"></canvas>
+                    </article>
+                    <article class="fx_row g_20 ai_normal">
+                        <div class="chart_box fx_4 wn_480 px_0">
+                            <article class="tit_box">
+                                <h3>누적 디지털 워터마크 현황</h3>
+                            </article>
+                            <div class="chart_donutBox">
+                                <div class="chart_donutItem">
+                                    <canvas id="chart_donut"></canvas>
+                                    <div class="chart_donutNum">
+                                        <span>2,500</span>건
+                                    </div>
+                                </div>
+                                <div class="chart_legend type2"></div>
+                            </div>
+                        </div>
+                        <div class="chart_box small loading_inBox fx_full wn_0">
+                            <div class="tit_box pr_0">
+                                <h3>디지털 워터마크 추이</h3>
+                                <div class="chk_tab chk_chartDate b_gy" data-chart="chart_dwm">
+                                    <label class="item">
+                                        <input type="radio" name="dwm_date-chk">
+                                        <span>일간</span>
+                                    </label>
+                                    <label class="item">
+                                        <input type="radio" name="dwm_date-chk" checked>
+                                        <span>주간</span>
+                                    </label>
+                                    <label class="item">
+                                        <input type="radio" name="dwm_date-chk">
+                                        <span>월간</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <canvas id="chart_dwm"></canvas>
+                        </div>
+                    </article>
+                </section>
+            </form>
+        </main>
+    </div>
+</body>
+</html>

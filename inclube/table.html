@@ -1,114 +1,151 @@
-<table>
-    <caption>고객사 조회 목록</caption>
+<table class="table_item">
+    <caption>table 목록</caption>
     <colgroup>
-        <col class="w_100">
-        <col>
-        <col>
-        <col>
-        <col>
-        <col>
+        <col style="width: 5%;">
+        <col style="width: 18%;">
+        <col style="width: 12%;">
+        <col style="width: 12%;">
+        <col style="width: 13%;">
+        <col style="width: 8%;">
+        <col style="width: 8%;">
+        <col style="width: 8%;">
+        <col style="width: 8%;">
+        <col style="width: 8%;">
     </colgroup>
     <thead>
         <tr>
-            <th>번호</th>
-            <th>관리자 권한</th>
-            <th>관리자 ID</th>
-            <th>관리자명</th>
-            <th>이용 상태</th>
-            <th>학교명</th>
-            <th>등록일시</th>
+            <th><label class="chk_all"><input type="checkbox"></label></th>
+            <th>콘텐츠 UUID</th>
+            <th>이북코드</th>
+            <th>서브이북코드</th>
+            <th>도서명</th>
+            <th>출판사</th>
+            <th>CP명</th>
+            <th>파일타입</th>
+            <th>상태</th>
+            <th>등록일</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>10</td>
-            <td>슈퍼 관리자</td>
-            <td>admin10</td>
-            <td>홍길동</td>
-            <td>이용중</td>
-            <td>서울대학교</td>
-            <td>2026.03.09 09:00:00</td>
+            <td><label><input type="checkbox"></label></td>
+            <td>aa1b2c3d4e5f67890123456789abcdef</td>
+            <td>CM14567890123456</td>
+            <td>CP000000001101</td>
+            <td>검은 숲의 기억</td>
+            <td>문학동네</td>
+            <td>오픈마켓CP</td>
+            <td>EPUB</td>
+            <td>패키징 완료</td>
+            <td class="c_gray7">2025-12-03 09:12:11</td>
         </tr>
         <tr>
-            <td>9</td>
-            <td>YES24 관리자</td>
-            <td>admin09</td>
-            <td>김철수</td>
-            <td>이용 중지중</td>
-            <td>연세대학교</td>
-            <td>2026.03.08 15:12:03</td>
+            <td><label><input type="checkbox"></label></td>
+            <td>bb2c3d4e5f6a7890123456789abcdef0</td>
+            <td>CM25678901234567</td>
+            <td>CP000000001102</td>
+            <td>사라진 계절</td>
+            <td>민음사</td>
+            <td>오픈마켓CP</td>
+            <td>PDF</td>
+            <td>검수 중</td>
+            <td class="c_gray7">2025-12-02 14:22:33</td>
         </tr>
         <tr>
-            <td>8</td>
-            <td>영업처 관리자</td>
-            <td>admin08</td>
-            <td>이영희</td>
-            <td>이용중</td>
-            <td>고려대학교</td>
-            <td>2026.03.07 11:30:45</td>
+            <td><label><input type="checkbox"></label></td>
+            <td>cc3d4e5f6a7b890123456789abcdef01</td>
+            <td>CM36789012345678</td>
+            <td>CP000000001103</td>
+            <td>우리가 함께 걷던 밤의 거리</td>
+            <td>창비</td>
+            <td>오픈마켓CP</td>
+            <td>EPUB</td>
+            <td>등록 완료</td>
+            <td class="c_gray7">2025-12-01 18:01:45</td>
         </tr>
         <tr>
-            <td>7</td>
-            <td>고객사 관리자</td>
-            <td>admin07</td>
-            <td>박민수</td>
-            <td>이용중</td>
-            <td>한양대학교</td>
-            <td>2026.03.06 14:05:22</td>
+            <td><label><input type="checkbox"></label></td>
+            <td>dd4e5f6a7b8c90123456789abcdef012</td>
+            <td>CM47890123456789</td>
+            <td>CP000000001104</td>
+            <td>바람이 머무는 곳</td>
+            <td>위즈덤하우스</td>
+            <td>오픈마켓CP</td>
+            <td>COMIC</td>
+            <td>패키징 완료</td>
+            <td class="c_gray7">2025-11-30 11:45:02</td>
         </tr>
         <tr>
-            <td>6</td>
-            <td>개발팀 관리자</td>
-            <td>admin06</td>
-            <td>최수진</td>
-            <td>이용 중지중</td>
-            <td>서강대학교</td>
-            <td>2026.03.05 12:20:10</td>
+            <td><label><input type="checkbox"></label></td>
+            <td>ee5f6a7b8c9d0123456789abcdef0123</td>
+            <td>CM58901234567890</td>
+            <td>CP000000001105</td>
+            <td>아주 오래된 약속</td>
+            <td>열린책들</td>
+            <td>오픈마켓CP</td>
+            <td>AUDIO</td>
+            <td>검수 완료</td>
+            <td class="c_gray7">2025-11-29 16:33:27</td>
         </tr>
         <tr>
-            <td>5</td>
-            <td>마케팅 관리자</td>
-            <td>admin05</td>
-            <td>정우성</td>
-            <td>이용중</td>
-            <td>경희대학교</td>
-            <td>2026.03.04 09:45:55</td>
+            <td><label><input type="checkbox"></label></td>
+            <td>ff6a7b8c9d0e123456789abcdef01234</td>
+            <td>CM69012345678901</td>
+            <td>CP000000001106</td>
+            <td>끝나지 않은 이야기의 시작</td>
+            <td>북하우스</td>
+            <td>오픈마켓CP</td>
+            <td>PDF</td>
+            <td>등록 대기</td>
+            <td class="c_gray7">2025-11-28 08:14:59</td>
         </tr>
         <tr>
-            <td>4</td>
-            <td>고객지원 관리자</td>
-            <td>admin04</td>
-            <td>한예슬</td>
-            <td>이용중</td>
-            <td>동국대학교</td>
-            <td>2026.03.03 10:10:30</td>
+            <td><label><input type="checkbox"></label></td>
+            <td>112a7b8c9d0e123456789abcdef0123a</td>
+            <td>CM70123456789012</td>
+            <td>CP000000001107</td>
+            <td>희미한 빛</td>
+            <td>문학과지성사</td>
+            <td>오픈마켓CP</td>
+            <td>AUDIO</td>
+            <td>콘텐츠 사용 중지</td>
+            <td class="c_gray7">2025-11-27 20:55:18</td>
         </tr>
         <tr>
-            <td>3</td>
-            <td>영업팀 관리자</td>
-            <td>admin03</td>
-            <td>이준호</td>
-            <td>이용 중지중</td>
-            <td>성균관대학교</td>
-            <td>2026.03.02 16:25:40</td>
+            <td><label><input type="checkbox"></label></td>
+            <td>223b8c9d0e1f23456789abcdef0123ab</td>
+            <td>CM81234567890123</td>
+            <td>CP000000001108</td>
+            <td>비 오는 날의 작은 카페 이야기</td>
+            <td>알에이치코리아</td>
+            <td>오픈마켓CP</td>
+            <td>EPUB</td>
+            <td>패키징 완료</td>
+            <td class="c_gray7">2025-11-26 13:09:41</td>
         </tr>
         <tr>
-            <td>2</td>
-            <td>운영팀 관리자</td>
-            <td>admin02</td>
-            <td>김민지</td>
-            <td>이용중</td>
-            <td>서울시립대학교</td>
-            <td>2026.03.01 13:15:00</td>
+            <td><label><input type="checkbox"></label></td>
+            <td>334c9d0e1f2a3456789abcdef0123abc</td>
+            <td>CM92345678901234</td>
+            <td>CP000000001109</td>
+            <td>어제의 흔적</td>
+            <td>비채</td>
+            <td>오픈마켓CP</td>
+            <td>COMIC</td>
+            <td>검수 중</td>
+            <td class="c_gray7">2025-11-25 07:48:06</td>
         </tr>
         <tr>
-            <td>1</td>
-            <td>신규 관리자</td>
-            <td>admin01</td>
-            <td>박지훈</td>
-            <td>이용중</td>
-            <td>국민대학교</td>
-            <td>2026.02.28 08:50:12</td>
+            <td><label><input type="checkbox"></label></td>
+            <td>445d0e1f2a3b456789abcdef0123abcd</td>
+            <td>CM03456789012345</td>
+            <td>CP000000001110</td>
+            <td>우리는 결국 서로를 이해하게 될까라는 질문에 대하여</td>
+            <td>은행나무</td>
+            <td>오픈마켓CP</td>
+            <td>EPUB</td>
+            <td>등록 완료</td>
+            <td class="c_gray7">2025-11-24 19:22:55</td>
         </tr>
     </tbody>
 </table>

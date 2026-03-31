@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bookswage 통합 보안 관제 시스템</title>
+
+    <!-- open graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://b2b.bookswage.com/admin">
+    <meta property="og:title" content="bookswage 통합 보안 관제 시스템">
+    <meta property="og:description" content="콘텐츠 보호, 사용자 인증, 데이터 유출 방지를 통합 관리하는 bookswage 보안 관제 시스템. 대시보드와 통계를 통해 운영 현황을 한눈에 확인하세요.">
+    <meta property="og:image" content="https://b2b.bookswage.com/assets/img/sns_logo.png">
+
+    <!-- favicon -->
+    <link rel="icon" href="../assets/img/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="../assets/img/favicon/site.webmanifest">
+
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="../assets/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="../assets/css/common.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+    <!-- script -->
+    <script type="text/javascript" src="./assets/js/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="./assets/js/jquery-migrate-1.4.1.min.js"></script>
+    <script type="text/javascript" src="./assets/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="./assets/js/common.js"></script>
+</head>
+<body>
+    <div class="wrap">
+        <header></header>
+
+        <aside></aside>
+
+        <main>
+            <form action="#"  class="box_content">
+                <section class="tit_box">
+                    <h2>CP 현황</h2>
+                </section>
+    
+                <section class="box_xtem">
+                    <div class="form_box search">
+                        <fieldset class="form_field">
+                            <legend>CP 현황 검색</legend>
+                            <div class="form_row">
+                                <label>검색어</label>
+                                <div class="form_item">
+                                    <div class="select_box md">
+                                        <button type="button" class="val" aria-haspopup="listbox" aria-expanded="false" aria-label="CP 현황 검색 옵션 선택"></button>
+                                        <ul class="options" role="listbox">
+                                            <li role="option" aria-selected="true" tabindex="0">CP 코드</li>
+                                            <li role="option" aria-selected="false" tabindex="-1">CP 명</li>
+                                            <li role="option" aria-selected="false" tabindex="-1">CP 아이디</li>
+                                        </ul>
+                                    </div>
+                                    <input type="text" class="lg" placeholder="검색어를 입력하세요.">
+                                </div>
+                            </div>
+                            <div class="form_row">
+                                <label>CP 상태</label>
+                                <div class="form_item">
+                                    <div class="select_box md">
+                                        <button type="button" class="val" aria-haspopup="listbox" aria-expanded="false" aria-label="CP 상태 선택"></button>
+                                        <ul class="options" role="listbox">
+                                            <li role="option" aria-selected="true" tabindex="0">전체</li>
+                                            <li role="option" aria-selected="false" tabindex="-1">정상</li>
+                                            <li role="option" aria-selected="false" tabindex="-1">중지</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form_row">
+                                <label>로그인 상태</label>
+                                <div class="form_item">
+                                    <div class="select_box md">
+                                        <button type="button" class="val" aria-haspopup="listbox" aria-expanded="false" aria-label="로그인 상태 선택"></button>
+                                        <ul class="options" role="listbox">
+                                            <li role="option" aria-selected="true" tabindex="0">전체</li>
+                                            <li role="option" aria-selected="false" tabindex="-1">가능</li>
+                                            <li role="option" aria-selected="false" tabindex="-1">불가능</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <button type="submit" class="btn dark">검색</button>
+                    </div>
+                </section>
+    
+                <section class="box_item">
+                    <div class="table_box">
+                        <div class="table_top">
+                            <p class="tot">총 <span>232</span>건</p>
+                            <div class="split_box">
+                                <div class="form_row">
+                                    <label class="lg">CP 상태 변경</label>
+                                    <div class="btn_box">
+                                        <button type="button" class="btn wh ico_rt ico_pass confirm_open" data-type="stats_ok">정상</button>
+                                        <button type="button" class="btn wh ico_rt ico_stop confirm_open" data-type="stats_no">중지</button>
+                                    </div>
+                                </div>
+                                <span class="line"></span>
+                                <div class="form_row">
+                                    <label class="lg">로그인 상태 변경</label>
+                                    <div class="btn_box">
+                                        <button type="button" class="btn wh ico_rt ico_user_pass confirm_open" data-type="stats_ok">가능</button>
+                                        <button type="button" class="btn wh ico_rt ico_user_del confirm_open" data-type="stats_no">불가능</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table_content" data-href="cp_info"></div>
+                    </div>
+                    <div class="page_area"></div>
+                </section>
+            </form>
+        </main>
+    </div>
+</body>
+</html>

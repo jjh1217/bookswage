@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bookswage 통합 보안 관제 시스템</title>
+
+    <!-- open graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://b2b.bookswage.com/admin">
+    <meta property="og:title" content="bookswage 통합 보안 관제 시스템">
+    <meta property="og:description" content="콘텐츠 보호, 사용자 인증, 데이터 유출 방지를 통합 관리하는 bookswage 보안 관제 시스템. 대시보드와 통계를 통해 운영 현황을 한눈에 확인하세요.">
+    <meta property="og:image" content="https://b2b.bookswage.com/assets/img/sns_logo.png">
+
+    <!-- favicon -->
+    <link rel="icon" href="../assets/img/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="../assets/img/favicon/site.webmanifest">
+
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="../assets/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="../assets/css/common.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+    <!-- script -->
+    <script type="text/javascript" src="./assets/js/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="./assets/js/jquery-migrate-1.4.1.min.js"></script>
+    <script type="text/javascript" src="./assets/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="./assets/js/common.js"></script>
+</head>
+<body>
+    <div class="wrap">
+        <header></header>
+
+        <aside></aside>
+
+        <main>
+            <form action="#" class="box_content">
+                <section class="tit_box">
+                    <h2>워터마킹 현황</h2>
+                </section>
+        
+                <section class="box_xtem">
+                    <div class="form_box search">
+                        <fieldset class="form_field">
+                            <legend>워터마킹 현황 검색</legend>
+                            <div class="form_row">
+                                <label>검색어</label>
+                                <div class="form_item">
+                                    <div class="select_box md">
+                                        <button type="button" class="val" aria-haspopup="listbox" aria-expanded="false" aria-label="워터마킹 현황 검색 옵션 선택"></button>
+                                        <ul class="options" role="listbox">
+                                            <li role="option" aria-selected="true" tabindex="0">콘텐츠 UUID</li>
+                                            <li role="option" aria-selected="false" >SP 코드</li>
+                                            <li role="option" aria-selected="false" tabindex="-1">디바이스 ID</li>
+                                            <li role="option" aria-selected="false" tabindex="-1">IP 주소</li>
+                                            <li role="option" aria-selected="false" tabindex="-1">User Agent</li>
+                                        </ul>
+                                    </div>
+                                    <input type="text" class="lg" placeholder="검색어를 입력하세요.">
+                                </div>
+                            </div>
+                            <div class="form_row date_tab">
+                                <label>마킹 일자</label>
+                                <div class="form_item fx_no">
+                                    <input type="text" class="datepicker md">
+                                    <span class="txt">~</span>
+                                    <input type="text" class="datepicker md">
+                                </div>
+                                <div class="chk_tab">
+                                    <label class="item">
+                                        <input type="radio" name="date_type-chk">
+                                        <span>전체</span>
+                                    </label>
+                                    <label class="item">
+                                        <input type="radio" name="date_type-chk" checked>
+                                        <span>1일</span>
+                                    </label>
+                                    <label class="item">
+                                        <input type="radio" name="date_type-chk">
+                                        <span>1주일</span>
+                                    </label>
+                                    <label class="item">
+                                        <input type="radio" name="date_type-chk">
+                                        <span>1개월</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <button type="submit" class="btn dark">검색</button>
+                    </div>
+                </section>
+
+                <section class="box_item">
+                    <div class="table_box">
+                        <div class="table_top">
+                            <p class="tot">총 <span>232</span>건</p>
+                        </div>
+                        <div class="table_content"></div>
+                    </div>
+                    <div class="page_area"></div>
+                </section>
+            </form>
+        </main>
+    </div>
+</body>
+</html>

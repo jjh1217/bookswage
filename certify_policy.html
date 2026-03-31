@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bookswage 통합 보안 관제 시스템</title>
+
+    <!-- open graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://b2b.bookswage.com/admin">
+    <meta property="og:title" content="bookswage 통합 보안 관제 시스템">
+    <meta property="og:description" content="콘텐츠 보호, 사용자 인증, 데이터 유출 방지를 통합 관리하는 bookswage 보안 관제 시스템. 대시보드와 통계를 통해 운영 현황을 한눈에 확인하세요.">
+    <meta property="og:image" content="https://b2b.bookswage.com/assets/img/sns_logo.png">
+
+    <!-- favicon -->
+    <link rel="icon" href="../assets/img/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="../assets/img/favicon/site.webmanifest">
+
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="../assets/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="../assets/css/common.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+    <!-- script -->
+    <script type="text/javascript" src="./assets/js/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="./assets/js/jquery-migrate-1.4.1.min.js"></script>
+    <script type="text/javascript" src="./assets/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="./assets/js/common.js"></script>
+
+    <script>
+        $(function(){
+            //정책 등록 팝업 - 유형 select opiton 선택
+            $(document).on('option:selected', '.select_box.pr_type', function(e, selectedText, $option) {
+                //유형별 UI 설정
+                policyRegister_reset();
+                if (selectedText === 'User Agent') {
+                    $('.pr_ua').removeClass('hide');
+                } else if (selectedText === 'IP 주소') {
+                    $('.pr_ip').removeClass('hide');
+                    $('.pr_ip input[name="ip-chk"]').prop('checked', false);
+                    $('#ip-single').prop('checked', true);
+                    $('.pr_ipSingle').removeClass('hide');
+                    $('.pr_ipBand').addClass('hide').find('input').val('');
+                } else if (selectedText === '디바이스 ID') {
+                    $('.pr_device').removeClass('hide');
+                }
+            });
+
+            //유형 IP 주소 - IP 선택 radio check에 따라 input 변경
+            $(document).on('change', '.pr_ip input[name="ip-chk"]', function () {
+                $('.pr_ip .form_item input').val('');
+                if ($('#ip-single').is(':checked')) { //단일 IP
+                    $('.pr_ipBand').addClass('hide');
+                } else if ($('#ip-band').is(':checked')) { //IP 대역
+                    $('.pr_ipBand').removeClass('hide');
+                }
+            });
+
+            //정책 등록 confirm 닫기 - 내부 구조 초기화 시키기
+            $(document).on('confirm:closed', '.pr_confirm', function(){
+                policyRegister_reset();
+
+                //유형 select - User Agent 선택되어 있도록 설정
+                const $select = $(this).find('.select_box.pr_type');
+                const $targetOption = $select.find('[role="option"]').filter(function(){
+                    return $(this).text().trim() === 'User Agent';
+                });
+                if ($targetOption.length) {
+                    $select.find('[role="option"]').attr('aria-selected', 'false').attr('tabindex', -1);
+                    $targetOption.attr('aria-selected', 'true').attr('tabindex', 0);
+                    $select.find('.val').text($targetOption.text());
+                    $select.find('.val').attr('aria-expanded', 'false');
+                }
+
+                $('.pr_ua').removeClass('hide');
+                $('.pr_ip input[name="ip-chk"]').prop('checked', false);
+                $('#ip-single').prop('checked', true);
+            });
+
+            //정책 등록 confirm 초기화 함수
+            function policyRegister_reset(){
+                $('.pr_confirm').find('input, textarea').val('');
+                $('.pr_confirm input[name="usage-chk"]').prop('checked', false);
+                $('#usage-ok').prop('checked', true);
+                $('.pr_confirm input[name="block-chk"]').prop('checked', false);
+                $('#block-no').prop('checked', true);
+                $('.pr_item').addClass('hide');
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="wrap">
+        <header></header>
+
+        <aside></aside>
+        
+        <main>
+            <form action="#" class="box_content">
+                <section class="tit_box">
+                    <h2>인증 정책 관리</h2>
+                    <button type="button" class="btn ico_rt ico_add_wh primary confirm_open no_draw">정책 등록</button>
+                </section>
+                <section class="box_item">
+                    <div class="table_box">
+                        <div class="table_top">
+                            <p class="tot">총 <span>232</span>건</p>
+                        </div>
+                        <div class="table_content no_sc">
+                            <table class="table_item">
+                                <caption>인증 정책 관리 목록</caption>
+                                <colgroup>
+                                    <col style="width: 68px;">
+                                    <col>
+                                    <col style="width: 140px">
+                                    <col style="width: 140px">
+                                    <col style="width: 140px">
+                                    <col style="width: 200px;"> 
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th>번호</th>
+                                        <th>콘텐츠 UUID</th>
+                                        <th>유형</th>
+                                        <th>사용 상태</th>
+                                        <th>차단 상태</th>
+                                        <th>등록일</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>10</td>
+                                        <td>이상 로그인 감지</td>
+                                        <td>로그인 패턴</td>
+                                        <td><span class="usage on">사용</span></td>
+                                        <td>차단</td>
+                                        <td class="c_gray7">2026-02-14 10:22:11</td>
+                                    </tr>
+                                    <tr>
+                                        <td>9</td>
+                                        <td>비정상 접근 국가 제한</td>
+                                        <td>국가 코드</td>
+                                        <td><span class="usage">사용 안함</span></td>
+                                        <td>차단</td>
+                                        <td class="c_gray7">2026-02-10 18:45:03</td>
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td>세션 중복 로그인 제한</td>
+                                        <td>세션 ID</td>
+                                        <td><span class="usage on">사용</span></td>
+                                        <td>허용</td>
+                                        <td class="c_gray7">2026-02-05 09:33:27</td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>비정상 트래픽 필터링</td>
+                                        <td>트래픽 패턴</td>
+                                        <td><span class="usage">사용 안함</span></td>
+                                        <td>차단</td>
+                                        <td class="c_gray7">2026-01-28 22:14:55</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>브라우저 버전 제한</td>
+                                        <td>브라우저</td>
+                                        <td><span class="usage on">사용</span></td>
+                                        <td>허용</td>
+                                        <td class="c_gray7">2026-01-20 13:05:48</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>API 요청 횟수 제한</td>
+                                        <td>요청 횟수</td>
+                                        <td><span class="usage">사용 안함</span></td>
+                                        <td>차단</td>
+                                        <td class="c_gray7">2026-01-15 06:41:19</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>유저 agent 차단</td>
+                                        <td>User Agent</td>
+                                        <td><span class="usage">사용 안함</span></td>
+                                        <td>차단</td>
+                                        <td class="c_gray7">2025-09-12 21:47:08</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>디바이스 ID 정책</td>
+                                        <td>디바이스 ID</td>
+                                        <td><span class="usage on">사용</span></td>
+                                        <td>허용</td>
+                                        <td class="c_gray7">2025-11-07 12:15:59</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>IP 주소 차단</td>
+                                        <td>IP 주소</td>
+                                        <td><span class="usage">사용 안함</span></td>
+                                        <td>차단</td>
+                                        <td class="c_gray7">2026-01-02 07:50:44</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>IP 주소 차단 정책</td>
+                                        <td>IP 주소</td>
+                                        <td><span class="usage on">사용</span></td>
+                                        <td>차단</td>
+                                        <td class="c_gray7">2025-12-28 15:28:31</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="page_area"></div>
+                </section>
+            </main>
+        </main>
+    </div>
+
+    <div class="confirm_wrap pr_confirm fix">
+        <section class="confirm_box">
+            <div class="confirm_tit">
+                <h2>정책 등록</h2>
+                <button type="button" class="close confirm_close no_remove"></button>
+            </div>
+            <div class="confirm_content">
+                <form action="#" class="form_box">
+                    <fieldset class="form_field">
+                        <legend>정책 등록</legend>
+                        <div class="form_row">
+                            <label>정책명</label>
+                            <div class="form_item">
+                                <input type="text" placeholder="인증 정책 명칭을 입력하세요.">
+                            </div>
+                        </div>
+                        <div class="form_row">
+                            <label>유형</label>
+                            <div class="select_box md pr_type">
+                                <button type="button" class="val" aria-haspopup="listbox" aria-expanded="false" aria-label="유형 선택"></button>
+                                <ul class="options" role="listbox">
+                                    <li role="option" aria-selected="true" tabindex="0">User Agent</li>
+                                    <li role="option" aria-selected="false" tabindex="-1">IP 주소</li>
+                                    <li role="option" aria-selected="false" tabindex="-1">디바이스 ID</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="form_line"></div>
+                        <div class="form_row">
+                            <label>사용 상태</label>
+                            <div class="chk_box">
+                                <label class="item">
+                                    <input type="radio" name="usage-chk" id="usage-ok" checked>
+                                    <span>사용</span>
+                                </label>
+                                <label class="item">
+                                    <input type="radio" name="usage-chk" id="usage-no">
+                                    <span>사용 안함</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form_row">
+                            <label>차단 상태</label>
+                            <div class="chk_box">
+                                <label class="item">
+                                    <input type="radio" name="block-chk" id="block-no" checked>
+                                    <span>차단</span>
+                                </label>
+                                <label class="item">
+                                    <input type="radio" name="block-chk" id="block-ok">
+                                    <span>허용</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- User Agent -->
+                        <div class="form_row pr_item pr_ua">
+                            <label>정규식</label>
+                            <div class="form_item">
+                                <input type="text" placeholder="정규식을 입력하세요.">
+                            </div>
+                        </div>
+                        <div class="form_row pr_item pr_ua">
+                            <label>결과값</label>
+                            <div class="form_item narrow">
+                                <input type="text">
+                                <button type="button" class="btn dark">테스트</button>
+                            </div>
+                            <div class="form_item down">
+                                <textarea></textarea>
+                            </div>
+                        </div>
+
+                        <!-- IP 주소 -->
+                        <div class="form_row pr_item pr_ip hide">
+                            <label>IP 선택</label>
+                            <div class="chk_box">
+                                <label class="item">
+                                    <input type="radio" name="ip-chk" id="ip-single" checked>
+                                    <span>단일 IP</span>
+                                </label>
+                                <label class="item">
+                                    <input type="radio" name="ip-chk" id="ip-band">
+                                    <span>IP 대역</span>
+                                </label>
+                            </div>
+                            <div class="form_item down narrow numOnly pr_ipSingle">
+                                <input type="text" class="t_ct sm" placeholder="00">
+                                <input type="text" class="t_ct sm" placeholder="00">
+                                <input type="text" class="t_ct sm" placeholder="00">
+                                <input type="text" class="t_ct sm" placeholder="00">
+                                <span class="txt pr_ipBand hide">&nbsp;~&nbsp;</span>
+                                <input type="text" class="t_ct sm pr_ipBand hide" placeholder="00">
+                            </div>
+                        </div>
+
+                        <!-- 디바이스 ID -->
+                        <div class="form_row pr_item pr_device hide">
+                            <label>디바이스 ID</label>
+                            <div class="form_item">
+                                <input type="text" placeholder="디바이스 ID를 입력하세요.">
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="btn_box confirm_btn">
+                        <button type="button" class="btn gray confirm_close no_remove">취소</button>
+                        <button type="button" class="btn primary confirm_close no_remove">등록</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
