@@ -1,5 +1,5 @@
-{
-    "menu": [
+const menuData = {
+    menu: [
         { 
             "title": "대시보드", 
             "icon": "ico_dashboard",
