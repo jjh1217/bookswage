@@ -37,8 +37,6 @@ $(function(){
         }
         if(!currentMenu) return;
 
-        console.log(currentPath, currentMenu)
-
         //menu gnb - on
         $('.gnb li a.item').removeClass('on');
         currentMenu.pages.forEach(p => $('.gnb li a.item[href$="' + p.url + '"]').addClass('on'));
