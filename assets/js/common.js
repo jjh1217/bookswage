@@ -1,24 +1,24 @@
 $(function(){
     //include - 로컬 환경에서만 사용
-    $('header').load('../../include/header.html');
-    $('aside').load('../../include/aside.html', function(){
-        $.getJSON('../../assets/js/menu.json', function(menuData){
+    $('header').load('/include/header.html');
+    $('aside').load('/include/aside.html', function(){
+        $.getJSON('/assets/js/menu.json', function(menuData){
             menuInit(menuData);
         });
     });
     $('.table_content').each(function() {
         if ($(this).hasClass('no_table') || $(this).hasClass('no_sc')) return;
         if ($(this).hasClass('type2')) {
-            $(this).load('../../include/table2.html');
+            $(this).load('/include/table2.html');
         } else {
-            $(this).load('../../include/table.html');
+            $(this).load('/include/table.html');
         }
     });
-    $('.page_area').load('../../include/page.html');
+    $('.page_area').load('/include/page.html');
 
     //js 호출 - 로컬 환경에서만 사용
-    $.getScript('../../assets/js/confirm.js');
-    $.getScript('../../assets/js/select.js');
+    $.getScript('/assets/js/confirm.js');
+    $.getScript('/assets/js/select.js');
 
     //menu - on 함수
     function menuInit(menuData){
