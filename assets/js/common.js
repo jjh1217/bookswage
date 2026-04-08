@@ -25,8 +25,6 @@ $(function(){
         let currentMenu = null;
         let onPageUrl = currentPath;
 
-        console.log(currentPath)
-
         //menu 및 현재 page 찾기
         for(const menu of menuData.menu){
             const page = menu.pages.find(p => p.url === currentPath);
@@ -37,7 +35,7 @@ $(function(){
             }
         }
         if(!currentMenu) return;
-
+        console.log($('aside .menu').length)
         //menu gnb - on
         $('.gnb li a.item').removeClass('on');
         currentMenu.pages.forEach(p => $('.gnb li a.item[href$="' + p.url + '"]').addClass('on'));
@@ -49,6 +47,8 @@ $(function(){
                                     <ul class="lnb"></ul>
                                 </nav>`;
             $('aside .menu').after(menuSubHtml);
+
+            console.log($('aside .menu').length)
 
             //menuSub lnb - 생성 (parent 없는 페이지만)
             const lnbHtml = currentMenu.pages
