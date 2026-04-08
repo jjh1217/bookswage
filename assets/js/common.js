@@ -1,11 +1,8 @@
 $(function(){
     //include - 로컬 환경에서만 사용
     $('header').load('/include/header.html');
-    $.getScript('/assets/js/menu.js', function(){
-        // menuData 전역으로 로드된 후 실행
-        $('aside').load('/include/aside.html', function(){
-            menuInit(menuData);
-        });
+    $('aside').load('/include/aside.html', function(){
+        menuInit(menuData);
     });
 
     $('.table_content').each(function() {
