@@ -1,19 +1,20 @@
 $(function(){
     //include - 로컬 환경에서만 사용
-    $('header').load('/include/header.html');
-    $('aside').load('/include/aside.html', function(){
-        menuInit(menuData);
+    $('header').load('/inclube/header.html');
+    $('aside').load('/inclube/aside.html', function(){
+        $.getJSON('/assets/js/menu.json', function(menuData){
+            menuInit(menuData);
+        });
     });
-
     $('.table_content').each(function() {
         if ($(this).hasClass('no_table') || $(this).hasClass('no_sc')) return;
         if ($(this).hasClass('type2')) {
-            $(this).load('/include/table2.html');
+            $(this).load('/inclube/table2.html');
         } else {
-            $(this).load('/include/table.html');
+            $(this).load('/inclube/table.html');
         }
     });
-    $('.page_area').load('/include/page.html');
+    $('.page_area').load('/inclube/page.html');
 
     //js 호출 - 로컬 환경에서만 사용
     $.getScript('/assets/js/confirm.js');
@@ -21,12 +22,14 @@ $(function(){
 
     //menu - on 함수
     function menuInit(menuData){
-        const currentPath = window.location.pathname.split("/").pop();
+        const currentPath = window.location.pathname.split("/").pop().replace('.html','');
         let currentMenu = null;
         let onPageUrl = currentPath;
 
+        //로컬 환경 여부
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
         //menu 및 현재 page 찾기
-        console.log("하하하 : " + currentMenu);
         for(const menu of menuData.menu){
             const page = menu.pages.find(p => p.url === currentPath);
             if(page){
@@ -35,12 +38,19 @@ $(function(){
                 break;
             }
         }
-        console.log("하하하 : " + currentMenu);
         if(!currentMenu) return;
-        console.log("하하하 : " + currentMenu);
+
         //menu gnb - on
         $('.gnb li a.item').removeClass('on');
-        currentMenu.pages.forEach(p => $('.gnb li a.item[href$="' + p.url + '"]').addClass('on'));
+        currentMenu.pages.forEach(p => {
+            $('.gnb li a.item').each(function(){
+                const hrefPath = $(this).attr('href').split('/').pop().replace(/\.html$/,'');
+                const pagePath = p.url.replace(/\.html$/,'');
+                if(hrefPath === pagePath){
+                    $(this).addClass('on');
+                }
+            });
+        });
 
         //menuSub - 생성
         if(currentMenu.icon !== "ico_dashboard"){
@@ -53,7 +63,10 @@ $(function(){
             //menuSub lnb - 생성 (parent 없는 페이지만)
             const lnbHtml = currentMenu.pages
                 .filter(p => !p.parent)
-                .map(p => `<li><a href="../${p.url}" class="item ${p.url === onPageUrl ? 'on' : ''}">${p.name}</a></li>`)
+                .map(p => {
+                    const href = isLocal ? `../${p.url}.html` : `../${p.url}`;
+                    return `<li><a href="${href}" class="item ${p.url.replace(/\.html$/,'') === onPageUrl ? 'on' : ''}">${p.name}</a></li>`;
+                })
                 .join('');
             $('aside .menuSub .lnb').html(lnbHtml);
         }

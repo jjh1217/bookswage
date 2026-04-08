@@ -1,0 +1,85 @@
+{
+    "menu": [
+        { 
+            "title": "대시보드", 
+            "icon": "ico_dashboard",
+            "pages": [
+                {"name": "대시보드", "url": "dashboard"}
+            ]
+        },
+        { 
+            "title": "콘텐츠 관리", 
+            "icon": "ico_document",
+            "pages": [
+                {"name": "콘텐츠 현황", "url": "content_status"}
+            ]
+        },
+        { 
+            "title": "디지털 워터마킹", 
+            "icon": "ico_page_break",
+            "pages": [
+                {"name": "워터마킹 현황", "url": "digital_status"}
+        ]
+        },
+            { 
+            "title": "인증 관리", 
+            "icon": "ico_certify",
+            "pages": [
+                {"name": "인증 정책 관리", "url": "certify_policy"},
+                {"name": "인증 내역", "url": "certify_history"},
+                {"name": "비정상 내역", "url": "certify_abnormal"},
+                {"name": "인증 차단 내역", "url": "certify_block"}
+            ]
+        },
+        { 
+            "title": "유출 탐지", 
+            "icon": "ico_leak",
+            "pages": [
+                {"name": "Web 현황", "url": "spill_web"},
+                {"name": "App 현황", "url": "spill_app"},
+                {"name": "PC 유출 탐지 관리", "url": "spill_pc"},
+                {"name": "탐지 프로그램 정보", "url": "spill_capture_info", "parent": "spill_pc"},
+                {"name": "탐지 프로그램 등록", "url": "spill_capture_create"}
+            ]
+        },
+        { 
+            "title": "통계", 
+            "icon": "ico_donut",
+            "pages": [
+                {"name": "패키징", "url": "stats_package"},
+                {"name": "인증", "url": "stats_certify"},
+                {"name": "비정상 인증", "url": "stats_abnormal"},
+                {"name": "인증 차단", "url": "stats_block"},
+                {"name": "캡쳐 시도", "url": "stats_capture"}
+            ]
+        },
+        { 
+            "title": "CP 관리", 
+            "icon": "ico_cp",
+            "pages": [
+                {"name": "CP 현황", "url": "cp_status"},
+                {"name": "CP 정보", "url": "cp_info", "parent": "cp_status"},
+                {"name": "CP 등록", "url": "cp_create"}
+            ]
+        },
+        { 
+            "title": "SP 관리", 
+            "icon": "ico_sp",
+            "pages": [
+                {"name": "SP 현황", "url": "sp_status"},
+                {"name": "SP 정보", "url": "sp_info", "parent": "sp_status"},
+                {"name": "SP 등록", "url": "sp_create"}
+            ]
+        },
+        { 
+            "title": "알림 설정", 
+            "icon": "ico_alarm_setting",
+            "pages": [
+                {"name": "알림 내역", "url": "alarm_history"},
+                {"name": "알림 관리", "url": "alarm_management"},
+                {"name": "알림 정보", "url": "alarm_info", "parent": "alarm_management"},
+                {"name": "알림 등록", "url": "alarm_create"}
+            ]
+        }
+    ]
+}
