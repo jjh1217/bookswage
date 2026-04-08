@@ -26,18 +26,18 @@ $(function(){
         let onPageUrl = currentPath;
 
         //menu 및 현재 page 찾기
-        console.log($('aside .menu').length)
+        console.log("하하하 : " + currentMenu);
         for(const menu of menuData.menu){
             const page = menu.pages.find(p => p.url === currentPath);
-            console.log(page);
             if(page){
                 currentMenu = menu;
                 if(page.parent) onPageUrl = page.parent;
                 break;
             }
         }
+        console.log("하하하 : " + currentMenu);
         if(!currentMenu) return;
-        console.log($('aside .menu').length)
+        console.log("하하하 : " + currentMenu);
         //menu gnb - on
         $('.gnb li a.item').removeClass('on');
         currentMenu.pages.forEach(p => $('.gnb li a.item[href$="' + p.url + '"]').addClass('on'));
@@ -49,8 +49,6 @@ $(function(){
                                     <ul class="lnb"></ul>
                                 </nav>`;
             $('aside .menu').after(menuSubHtml);
-
-            console.log($('aside .menu').length)
 
             //menuSub lnb - 생성 (parent 없는 페이지만)
             const lnbHtml = currentMenu.pages
