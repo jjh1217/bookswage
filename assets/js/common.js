@@ -26,8 +26,10 @@ $(function(){
         let onPageUrl = currentPath;
 
         //menu 및 현재 page 찾기
+        console.log($('aside .menu').length)
         for(const menu of menuData.menu){
             const page = menu.pages.find(p => p.url === currentPath);
+            console.log(page);
             if(page){
                 currentMenu = menu;
                 if(page.parent) onPageUrl = page.parent;
