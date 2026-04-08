@@ -2,10 +2,15 @@ $(function(){
     //include - 로컬 환경에서만 사용
     $('header').load('/include/header.html');
     $('aside').load('/include/aside.html', function(){
-        $.getJSON('/assets/js/menu.json', function(menuData){
-            menuInit(menuData);
-        });
+    console.log('aside.html load 완료');  // ← load 콜백 확인
+
+    $.getJSON('/assets/js/menu.json', function(menuData){
+        console.log('menu.json 불러옴:', menuData); // ← getJSON 확인
+
+        menuInit(menuData); 
+        console.log('menuInit 실행 완료'); // ← menuInit 호출 여부 확인
     });
+});
     $('.table_content').each(function() {
         if ($(this).hasClass('no_table') || $(this).hasClass('no_sc')) return;
         if ($(this).hasClass('type2')) {
